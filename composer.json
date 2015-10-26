@@ -12,5 +12,10 @@
   ],
   "require": {
     "ivan-novakov/php-openid-connect-client": "0.2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "SSPConnect\\": "src/"
+    }
   }
 }
