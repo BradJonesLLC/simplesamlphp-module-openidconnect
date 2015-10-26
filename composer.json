@@ -7,7 +7,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/BradJonesLLC/simplesamlphp-openid-connect"
+      "url": "https://github.com/bradjones1/php-openid-connect-client"
     }
   ],
   "minimum-stability": "dev",
