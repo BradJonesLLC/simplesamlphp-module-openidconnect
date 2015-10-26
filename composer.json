@@ -4,6 +4,12 @@
   "license": "GPL-2.0+",
   "keywords": ["authentication"],
   "homepage": "https://github.com/BradJonesLLC/simplesamlphp-openid-connect",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/BradJonesLLC/simplesamlphp-openid-connect"
+    }
+  ],
   "minimum-stability": "dev",
   "authors": [
     {
@@ -11,12 +17,9 @@
     }
   ],
   "require": {
-    "ivan-novakov/php-openid-connect-client": "0.2.0"
+    "ivan-novakov/php-openid-connect-client": "dev-master"
   },
   "autoload": {
-    "classmap": ["src/Auth/"],
-    "psr-4": {
-      "SSPConnect\\": "src/"
-    }
+    "classmap": ["src/Auth/"]
   }
 }
