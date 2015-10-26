@@ -17,7 +17,7 @@
     }
   ],
   "require": {
-    "ivan-novakov/php-openid-connect-client": "dev-master"
+    "ivan-novakov/php-openid-connect-client": "dev-httpClient-fix"
   },
   "autoload": {
     "classmap": ["src/Auth/"]
