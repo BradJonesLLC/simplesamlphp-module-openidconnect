@@ -14,8 +14,8 @@
     "ivan-novakov/php-openid-connect-client": "0.2.0"
   },
   "autoload": {
+    "classmap": ["src/Auth/"],
     "psr-4": {
-      "classmap": ["src/Auth/"],
       "SSPConnect\\": "src/"
     }
   }
