@@ -151,12 +151,14 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
    * Map attributes from the response.
    */
   protected static function getAttributes($user) {
-    return array(
+    // Map certain values to new keys but then return everything, in case
+    // we need raw attributes from the server.
+    $mapped = array(
       'uid' => array($user['sub']),
       'username' => array($user['name']),
-      'displayName' => array($user['preferred_username']),
       'mail' => array($user['email']),
     );
+    return $mapped + $user;
   }
 
   /**
