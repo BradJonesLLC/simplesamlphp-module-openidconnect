@@ -153,6 +153,7 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   protected static function getAttributes($user) {
     return array(
       'uid' => array($user['sub']),
+      'username' => array($user['name']),
       'displayName' => array($user['preferred_username']),
       'mail' => array($user['email']),
     );
