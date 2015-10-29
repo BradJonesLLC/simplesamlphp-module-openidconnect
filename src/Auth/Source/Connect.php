@@ -68,23 +68,6 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   }
 
   /**
-   * Retrieve attributes for the user.
-   *
-   * @return array|NULL  The user's attributes, or NULL if the user isn't authenticated.
-   */
-  private function getUser() {
-    $user = $this->container->get('current_user')->getAccount();
-    if ($user->id() != 0) {
-      return array(
-        'uid' => array($user->getUsername()),
-        'displayName' => array($user->getDisplayName()),
-        'username' => array($user->getUsername()),
-      );
-    }
-    return NULL;
-  }
-
-  /**
    * Return the config array.
    */
   protected function getConfig($stateId) {
@@ -161,7 +144,6 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
     }
     $mapped = array(
       'uid' => $user['sub'],
-      'username' => $user['name'],
       'mail' => $user['email'],
     );
     return $mapped + $user;
