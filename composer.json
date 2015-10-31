@@ -20,6 +20,7 @@
     "ivan-novakov/php-openid-connect-client": "dev-httpClient-fix"
   },
   "autoload": {
-    "classmap": ["src/Auth/"]
+    "classmap": ["src/Auth/"],
+    "psr-4": {"SSPOpenIdConnect\\": "src"}
   }
 }
