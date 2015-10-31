@@ -240,7 +240,7 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
    */
   public function logout(&$state) {
     assert('is_array($state)');
-    // @todo: Implement.
+    SimpleSAML_Module::callHooks('openidconnect_logout', $state);
   }
 
 }
