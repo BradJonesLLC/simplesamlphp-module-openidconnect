@@ -11,7 +11,7 @@ class Install {
       mkdir($location, 0775);
       touch($file);
       mkdir($location . '/www', 0775);
-      copy(__FILE__ . '../www/resume.php', $location . '/www/resume.php');
+      copy(dirname(__FILE__) . '/../www/resume.php', $location . '/www/resume.php');
       // @todo - Throw an error here if we're unsuccessful?
     }
   }
