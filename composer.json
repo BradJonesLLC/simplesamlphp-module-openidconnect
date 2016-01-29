@@ -3,6 +3,7 @@
   "description": "Provides OpenID Connect support to SimpleSAMLphp",
   "license": "GPL-2.0+",
   "keywords": ["authentication"],
+  "type": "simplesamlphp-module",
   "homepage": "https://github.com/BradJonesLLC/simplesamlphp-openid-connect",
   "repositories": [
     {
@@ -17,7 +18,8 @@
     }
   ],
   "require": {
-    "ivan-novakov/php-openid-connect-client": "dev-httpClient-fix"
+    "ivan-novakov/php-openid-connect-client": "dev-httpClient-fix",
+    "simplesamlphp/composer-module-installer": "~1.0"
   },
   "autoload": {
     "classmap": ["src/Auth/"],
