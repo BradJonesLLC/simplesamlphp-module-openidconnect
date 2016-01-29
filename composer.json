@@ -1,10 +1,10 @@
 {
-  "name": "bradjonesllc/simplesamlphp-openid-connect",
+  "name": "bradjonesllc/simplesamlphp-module-openidconnect",
   "description": "Provides OpenID Connect support to SimpleSAMLphp",
   "license": "GPL-2.0+",
   "keywords": ["authentication"],
   "type": "simplesamlphp-module",
-  "homepage": "https://github.com/BradJonesLLC/simplesamlphp-openid-connect",
+  "homepage": "https://github.com/BradJonesLLC/simplesamlphp-module-openidconnect",
   "repositories": [
     {
       "type": "vcs",
