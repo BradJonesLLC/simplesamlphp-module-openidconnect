@@ -70,11 +70,11 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   /**
    * Return the config array.
    */
-  protected function getConfig($stateId) {
+  protected function getConfig() {
     return array(
       'client_info' => array(
         'client_id' => $this->clientId,
-        'redirect_uri' => SimpleSAML_Module::getModuleURL('openidconnect/resume.php', array('State' => $stateId)),
+        'redirect_uri' => SimpleSAML_Module::getModuleURL('openidconnect/resume.php'),
         'authorization_endpoint' => $this->authEndpoint,
         'token_endpoint' => $this->tokenEndpoint,
         'user_info_endpoint' => $this->userInfoEndpoint,
@@ -97,7 +97,7 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
     $stateId = SimpleSAML_Auth_State::saveState($state, 'openidconnect:Connect', TRUE);
     $flow = new Basic($this->getConfig($stateId));
     $uri = $flow->getAuthorizationRequestUri($this->scope);
-    SimpleSAML_Utilities::redirectTrustedURL($uri);
+    SimpleSAML_Utilities::redirectTrustedURL($uri, array('state' => $stateId));
   }
 
   /**
@@ -159,8 +159,8 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
    */
   public static function resume() {
     $request = Request::fromString($_SERVER['REQUEST_METHOD'] . ' ' . self::requesturi());
-    if (!$stateId = $request->getQuery('State')) {
-      throw new SimpleSAML_Error_BadRequest('Missing "State" parameter.');
+    if (!$stateId = $request->getQuery('state')) {
+      throw new SimpleSAML_Error_BadRequest('Missing "state" parameter.');
     }
     $state = SimpleSAML_Auth_State::loadState($stateId, 'openidconnect:Connect');
 
@@ -191,7 +191,7 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
     $tokenDispatcher = new Dispatcher();
     $tokenRequest = new TokenRequest();
     $clientInfo = new ClientInfo();
-    $clientInfo->fromArray(reset($source->getConfig($stateId)));
+    $clientInfo->fromArray(reset($source->getConfig()));
     $tokenRequest->setClientInfo($clientInfo);
     $tokenRequest->setCode($request->getQuery('code'));
     $tokenRequest->setGrantType('authorization_code');
