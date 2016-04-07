@@ -19,7 +19,8 @@
   ],
   "require": {
     "ivan-novakov/php-openid-connect-client": "dev-httpClient-fix",
-    "simplesamlphp/composer-module-installer": "~1.1.4"
+    "simplesamlphp/composer-module-installer": "~1.1.4",
+    "simplesamlphp/simplesamlphp": "1.*"
   },
   "autoload": {
     "classmap": ["src/Auth/Source/"],
