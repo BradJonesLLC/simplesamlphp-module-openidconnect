@@ -3,7 +3,11 @@ OpenID Connect module for SimpleSAMLphp
 
 ## Developer notes/Known issues
 
-- This library uses a fork of the OpenID Connect package by ivan-novakov, until
-  [this pull request](https://github.com/ivan-novakov/php-openid-connect-client/pull/11)
-  and others are merged upstream. You will have to copy over the repository definition
-  to your project's root composer.json file.
+- This library uses a fork of the OpenID Connect package by ivan-novakov,
+  it does not differ much from the original but the upstream package
+  appears no longer to be maintained.
+
+## License and Copyright
+
+&copy; 2016 Brad Jones LLC
+GPL v2 license.

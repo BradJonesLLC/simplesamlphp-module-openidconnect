@@ -5,20 +5,15 @@
   "keywords": ["authentication"],
   "type": "simplesamlphp-module",
   "homepage": "https://github.com/BradJonesLLC/simplesamlphp-module-openidconnect",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/bradjones1/php-openid-connect-client"
-    }
-  ],
   "minimum-stability": "dev",
   "authors": [
     {
-      "name": "Brad Jones"
+      "name": "Brad Jones",
+      "homepage": "https://bradjonesllc.com"
     }
   ],
   "require": {
-    "ivan-novakov/php-openid-connect-client": "dev-httpClient-fix",
+    "bradjonesllc/php-openid-connect-client": "~0.2.1",
     "simplesamlphp/composer-module-installer": "~1.1.4",
     "simplesamlphp/simplesamlphp": "~1.0"
   },
