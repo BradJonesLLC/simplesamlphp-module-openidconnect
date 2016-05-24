@@ -13,7 +13,7 @@
     }
   ],
   "require": {
-    "bradjonesllc/php-openid-connect-client": "~0.2.1",
+    "ivan-novakov/php-openid-connect-client": "~0.2.1",
     "simplesamlphp/composer-module-installer": "~1.1.4",
     "simplesamlphp/simplesamlphp": "~1.0"
   },
