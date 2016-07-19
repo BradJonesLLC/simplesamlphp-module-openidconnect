@@ -1,5 +1,5 @@
 {
-  "name": "kasperrt/simplesamlphp-module-idconnect",
+  "name": "kasperrt/simplesamlphp-module-openidconnect",
   "description": "Provides OpenID Connect support to SimpleSAMLphp, built/forked from Brad Jones' openidconnect module.",
   "license": "GPL-2.0+",
   "keywords": ["authentication"],
