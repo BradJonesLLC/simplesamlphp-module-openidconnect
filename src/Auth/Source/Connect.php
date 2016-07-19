@@ -158,26 +158,6 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   }
 
   /**
-  * Fetch config from static object
-  *
-  * This function fetches and returns the config, similar to the getConfig
-  * function, just for static objects.
-  *
-  * @param sspmod_openidconnect_Auth_Source_Connect $that  Static object
-  */
-  private static function getConfigSelf($that) {
-    return array(
-      'client_id'               => $that->clientId,
-      'client_secret'           => $that->clientSecret,
-      'redirect_uri'            => SimpleSAML_Module::getModuleURL('openidconnect/resume.php'),
-      'authorization_endpoint'  => $that->authEndpoint,
-      'token_endpoint'          => $that->tokenEndpoint,
-      'user_info_endpoint'      => $that->userInfoEndpoint,
-      'response_type'           => 'code',
-    );
-  }
-
-  /**
   * Resume authentication process.
   *
   * This function resumes the authentication process after the user has
