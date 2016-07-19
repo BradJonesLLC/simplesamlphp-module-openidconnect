@@ -5,8 +5,6 @@ To install, run ```composer require kasperrt/simplesamlphp-module-dataportenopen
 
 
 
-## License and Copyright
-
-&copy; 2016 Brad Jones LLC
+## License
 
 GPL v2 license.
