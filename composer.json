@@ -1,10 +1,10 @@
 {
-  "name": "kasperrt/simplesamlphp-module-dataportenopenidconnect",
-  "description": "Provides OpenID Connect support to SimpleSAMLphp, built from Brad Jones' openidconnect module.",
+  "name": "kasperrt/simplesamlphp-module-idconnect",
+  "description": "Provides OpenID Connect support to SimpleSAMLphp, built/forked from Brad Jones' openidconnect module.",
   "license": "GPL-2.0+",
   "keywords": ["authentication"],
   "type": "simplesamlphp-module",
-  "homepage": "https://github.com/kasperrt/simplesamlphp-module-dataportenopenidconnect",
+  "homepage": "https://github.com/kasperrt/simplesamlphp-module-openidconnect",
   "minimum-stability": "dev",
   "authors": [
     {

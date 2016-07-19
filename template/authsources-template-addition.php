@@ -1,13 +1,14 @@
 <?php
 
 $config = array(
-  'dataporten-openid-connect' => array(
-      'dataportenopenidconnect:Connect',
+  'openid-connect' => array(
+      'openidconnect:Connect',
       'client_id'           => '*****-*****-*****-*****-*****',
       'client_secret'       => '*****-*****-*****-*****-*****',
-      'token_endpoint'      => 'https://auth.dataporten.no/oauth/token',
-      'user_info_endpoint'  => 'https://auth.dataporten.no/openid/userinfo',
-      'auth_endpoint'       => 'https://auth.dataporten.no/oauth/authorization',
+      'token_endpoint'      => 'https://auth.dataporten.no/oauth/token',          //Example url
+      'user_info_endpoint'  => 'https://auth.dataporten.no/openid/userinfo',      //Example url
+      'auth_endpoint'       => 'https://auth.dataporten.no/oauth/authorization',  //Example url
+      'sslcapath'           => '/etc/ssl/certs',
   ),
 
 );
