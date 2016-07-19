@@ -1,3 +1,3 @@
 <?php
 
-sspmod_dataportenopenidconnect_Auth_Source_Connect::resume();
+sspmod_openidconnect_Auth_Source_Connect::resume();
