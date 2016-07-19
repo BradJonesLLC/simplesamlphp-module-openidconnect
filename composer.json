@@ -1,15 +1,15 @@
 {
   "name": "kasperrt/simplesamlphp-module-openidconnect",
-  "description": "Provides OpenID Connect support to SimpleSAMLphp, built/forked from Brad Jones' openidconnect module.",
+  "description": "Provides OpenID Connect support to SimpleSAMLphp",
   "license": "GPL-2.0+",
   "keywords": ["authentication"],
   "type": "simplesamlphp-module",
-  "homepage": "https://github.com/kasperrt/simplesamlphp-module-openidconnect",
+  "homepage": "https://github.com/BradJonesLLC/simplesamlphp-module-openidconnect",
   "minimum-stability": "dev",
   "authors": [
     {
-      "name": "Kasper Rynning-Tønnesen",
-      "homepage": "https://kasperrt.no"
+      "name": "Brad Jones",
+      "homepage": "https://bradjonesllc.com"
     }
   ],
   "require": {
