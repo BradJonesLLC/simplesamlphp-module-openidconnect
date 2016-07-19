@@ -1,4 +1,4 @@
-# simplesamlphp-openid-connect
+# simplesamlphp-dataporten-openid-connect
 OpenID Connect module for SimpleSAMLphp
 
 ## License and Copyright
