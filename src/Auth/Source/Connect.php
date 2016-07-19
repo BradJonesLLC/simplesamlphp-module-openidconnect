@@ -203,12 +203,12 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
     $tokenRequest->setCode($request->getQuery('code'));
     $tokenRequest->setGrantType('authorization_code');
 
-    $userDispatcher = new InfoDispatcher();
-    //if($source->sslcapath) {
-      $tokenDispatcher->setOptions(['http_options' => ['sslcapath' => $source->sslcapath]]);
-      $userDispatcher->setOptions(['http_options' => ['sslcapath' => $source->sslcapath]]);
-    //}
+
+    $tokenDispatcher->setOptions(['http_options' => ['sslcapath' => $source->sslcapath]]);
     $tokenResponse = $tokenDispatcher->sendTokenRequest($tokenRequest);
+
+    $userDispatcher = new InfoDispatcher();
+    $userDispatcher->setOptions(['http_options' => ['sslcapath' => $source->sslcapath]]);
 
     $infoRequest = new InfoRequest();
     $infoRequest->setClientInfo($clientInfo);
