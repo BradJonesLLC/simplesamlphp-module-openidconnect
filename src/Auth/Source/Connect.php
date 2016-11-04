@@ -1,6 +1,5 @@
 <?php
 
-use InoOicClient\Flow\Basic;
 use InoOicClient\Oic\Authorization;
 use Zend\Http\Request;
 use InoOicClient\Oic\Token\Request as TokenRequest;
@@ -9,52 +8,53 @@ use InoOicClient\Oic\Token\Dispatcher;
 use InoOicClient\Oic\UserInfo\Dispatcher as InfoDispatcher;
 use InoOicClient\Oic\UserInfo\Request as InfoRequest;
 
+include('OAuth2.php');
 // This class is not namespaced as simplesamlphp does not namespace its classes.
 
 class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
 
   /**
-   * The client ID
-   */
+  * The client ID
+  */
   protected $clientId;
 
   /**
-   * The client secret.
-   */
+  * The client secret.
+  */
   protected $clientSecret;
 
   /**
-   * The token endpoint.
-   */
+  * The token endpoint.
+  */
   protected $tokenEndpoint;
 
   /**
-   * The user info endpoint.
-   */
+  * The user info endpoint.
+  */
   protected $userInfoEndpoint;
 
   /**
-   * The auth endpoint.
-   */
+  * The auth endpoint.
+  */
   protected $authEndpoint;
 
   /**
-   * The sslcapath for the Zend Http client.
-   * @see http://framework.zend.com/manual/current/en/modules/zend.http.client.adapters.html
-   */
+  * The sslcapath for the Zend Http client.
+  * @see http://framework.zend.com/manual/current/en/modules/zend.http.client.adapters.html
+  */
   protected $sslcapath;
 
   /**
-   * The scope we're requesting.
-   */
+  * The scope we're requesting.
+  */
   protected $scope = 'openid profile email';
 
   /**
-   * Constructor for this authentication source.
-   *
-   * @param array $info  Information about this authentication source.
-   * @param array $config  Configuration.
-   */
+  * Constructor for this authentication source.
+  *
+  * @param array $info  Information about this authentication source.
+  * @param array $config  Configuration.
+  */
   public function __construct($info, $config) {
     /* Call the parent constructor first, as required by the interface. */
     parent::__construct($info, $config);
@@ -68,8 +68,8 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   }
 
   /**
-   * Return the config array.
-   */
+  * Return the config array.
+  */
   protected function getConfig() {
     return array(
       'client_info' => array(
@@ -87,28 +87,35 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
       ),
     );
   }
+
   /**
-   * Log in using an external authentication helper.
-   *
-   * @param array &$state  Information about the current authentication.
-   */
+  * Log in using an external authentication helper.
+  *
+  * @param array &$state  Information about the current authentication.
+  */
   public function authenticate(&$state) {
     $state['openidconnect:AuthID'] = $this->authId;
     $stateId = SimpleSAML_Auth_State::saveState($state, 'openidconnect:Connect', TRUE);
-    $flow = new Basic($this->getConfig($stateId));
-    $uri = $flow->getAuthorizationRequestUri($this->scope);
-    SimpleSAML_Utilities::redirectTrustedURL($uri, array('state' => $stateId));
+    $info = $this->getConfig($stateId);
+    \SimpleSAML\Utils\HTTP::redirectTrustedURL($info["client_info"]["authorization_endpoint"], array(
+      "client_id"     => $info["client_info"]["client_id"],
+      "redirect_uri"  => $info["client_info"]["redirect_uri"],
+      "response_type" => "code",
+      "scope"         => $this->scope,
+      "state"         => $stateId
+    ));
+
   }
 
   /**
-   *
-   * Returns the equivalent of Apache's $_SERVER['REQUEST_URI'] variable.
-   *
-   * Because $_SERVER['REQUEST_URI'] is only available on Apache, we generate an equivalent using other environment variables.
-   *
-   * Taken from Drupal.
-   * @see https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/request_uri/7
-   */
+  *
+  * Returns the equivalent of Apache's $_SERVER['REQUEST_URI'] variable.
+  *
+  * Because $_SERVER['REQUEST_URI'] is only available on Apache, we generate an equivalent using other environment variables.
+  *
+  * Taken from Drupal.
+  * @see https://api.drupal.org/api/drupal/includes!bootstrap.inc/function/request_uri/7
+  */
   public static function requesturi() {
     if (isset($_SERVER['REQUEST_URI'])) {
       $uri = $_SERVER['REQUEST_URI'];
@@ -131,8 +138,8 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   }
 
   /**
-   * Map attributes from the response.
-   */
+  * Map attributes from the response.
+  */
   protected static function getAttributes($user) {
     // Map certain values to new keys but then return everything, in case
     // we need raw attributes from the server.
@@ -145,62 +152,64 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
     $mapped = array(
       'uid' => $user['sub'],
       'mail' => $user['email'],
+      'picture' => $user['picture'],
     );
     return $mapped + $user;
   }
 
   /**
-   * Resume authentication process.
-   *
-   * This function resumes the authentication process after the user has
-   * entered his or her credentials.
-   *
-   * @param array &$state  The authentication state.
-   */
+  * Resume authentication process.
+  *
+  * This function resumes the authentication process after the user has
+  * entered his or her credentials.
+  *
+  * @param array &$state  The authentication state.
+  */
   public static function resume() {
     $request = Request::fromString($_SERVER['REQUEST_METHOD'] . ' ' . self::requesturi());
-    if (!$stateId = $request->getQuery('state')) {
-      throw new SimpleSAML_Error_BadRequest('Missing "state" parameter.');
-    }
-    $state = SimpleSAML_Auth_State::loadState($stateId, 'openidconnect:Connect');
-
-    /*
-     * Now we have the $state-array, and can use it to locate the authentication
-     * source.
-     */
-    $source = SimpleSAML_Auth_Source::getById($state['openidconnect:AuthID']);
-    if ($source === NULL) {
-      /*
-       * The only way this should fail is if we remove or rename the authentication source
-       * while the user is at the login page.
-       */
-      throw new SimpleSAML_Error_Exception('Could not find authentication source.');
-    }
-
-    /*
-     * Make sure that we haven't switched the source type while the
-     * user was at the authentication page. This can only happen if we
-     * change config/authsources.php while an user is logging in.
-     */
-    if (! ($source instanceof self)) {
-      throw new SimpleSAML_Error_Exception('Authentication source type changed.');
-    }
+   if (!$stateId = $request->getQuery('state')) {
+     throw new SimpleSAML_Error_BadRequest('Missing "state" parameter.');
+   }
+   $state = SimpleSAML_Auth_State::loadState($stateId, 'openidconnect:Connect');
+   /*
+    * Now we have the $state-array, and can use it to locate the authentication
+    * source.
+    */
+   $source = SimpleSAML_Auth_Source::getById($state['openidconnect:AuthID']);
+   if ($source === NULL) {
+     /*
+      * The only way this should fail is if we remove or rename the authentication source
+      * while the user is at the login page.
+      */
+     throw new SimpleSAML_Error_Exception('Could not find authentication source.');
+   }
+   /*
+    * Make sure that we haven't switched the source type while the
+    * user was at the authentication page. This can only happen if we
+    * change config/authsources.php while an user is logging in.
+    */
+   if (! ($source instanceof self)) {
+     throw new SimpleSAML_Error_Exception('Authentication source type changed.');
+   }
 
     // The library has its own state manager but we're using SSP's.
     // We've already validated the state, so let's get the token.
     $tokenDispatcher = new Dispatcher();
     $tokenRequest = new TokenRequest();
     $clientInfo = new ClientInfo();
+
     $clientInfo->fromArray(reset($source->getConfig()));
     $tokenRequest->setClientInfo($clientInfo);
     $tokenRequest->setCode($request->getQuery('code'));
     $tokenRequest->setGrantType('authorization_code');
+
+
     $tokenDispatcher->setOptions(['http_options' => ['sslcapath' => $source->sslcapath]]);
     $tokenResponse = $tokenDispatcher->sendTokenRequest($tokenRequest);
 
-    // Get user with token.
     $userDispatcher = new InfoDispatcher();
     $userDispatcher->setOptions(['http_options' => ['sslcapath' => $source->sslcapath]]);
+
     $infoRequest = new InfoRequest();
     $infoRequest->setClientInfo($clientInfo);
     $infoRequest->setAccessToken($tokenResponse->getAccessToken());
@@ -216,15 +225,12 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
        */
       throw new SimpleSAML_Error_Exception('User not authenticated after login attempt.', $e->getCode(), $e);
     }
-
     /*
      * So, we have a valid user. Time to resume the authentication process where we
      * paused it in the authenticate()-function above.
      */
-
     $state['Attributes'] = self::getAttributes($user);
     SimpleSAML_Auth_Source::completeAuth($state);
-
     /*
      * The completeAuth-function never returns, so we never get this far.
      */
@@ -233,11 +239,11 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
 
 
   /**
-   * This function is called when the user start a logout operation, for example
-   * by logging out of a SP that supports single logout.
-   *
-   * @param array &$state  The logout state array.
-   */
+  * This function is called when the user start a logout operation, for example
+  * by logging out of a SP that supports single logout.
+  *
+  * @param array &$state  The logout state array.
+  */
   public function logout(&$state) {
     assert('is_array($state)');
     SimpleSAML_Module::callHooks('openidconnect_logout', $state);
