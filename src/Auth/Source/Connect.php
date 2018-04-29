@@ -8,7 +8,6 @@ use InoOicClient\Oic\Token\Dispatcher;
 use InoOicClient\Oic\UserInfo\Dispatcher as InfoDispatcher;
 use InoOicClient\Oic\UserInfo\Request as InfoRequest;
 
-include('OAuth2.php');
 // This class is not namespaced as simplesamlphp does not namespace its classes.
 
 class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
@@ -74,7 +73,7 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
     return array(
       'client_info' => array(
         'client_id' => $this->clientId,
-        'redirect_uri' => SimpleSAML_Module::getModuleURL('openidconnect/resume.php'),
+        'redirect_uri' => SimpleSAML\Module::getModuleURL('openidconnect/resume.php'),
         'authorization_endpoint' => $this->authEndpoint,
         'token_endpoint' => $this->tokenEndpoint,
         'user_info_endpoint' => $this->userInfoEndpoint,
@@ -246,7 +245,7 @@ class sspmod_openidconnect_Auth_Source_Connect extends SimpleSAML_Auth_Source {
   */
   public function logout(&$state) {
     assert('is_array($state)');
-    SimpleSAML_Module::callHooks('openidconnect_logout', $state);
+    SimpleSAML\Module::callHooks('openidconnect_logout', $state);
   }
 
 }
